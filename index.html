@@ -1,15 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eBay API Integration</title>
-    <script src="script.js"></script>
+    <title>eBay Listings</title>
+    <style>
+        .listing { border: 1px solid #ddd; padding: 10px; margin: 10px; display: inline-block; }
+        .listing img { width: 150px; height: 150px; object-fit: cover; }
+    </style>
 </head>
 <body>
     <h1>eBay Listings</h1>
-    <div id="listing"></div>
-    <script>getEbayListings();</script>
+    <div id="listingsContainer">Loading...</div>
+
+    <script src="script.js"></script>
 </body>
 </html>
