@@ -1,44 +1,33 @@
-async function getEbayListings() {
-    try {
-        const response = await fetch('http://localhost:3000/ebay-listings');
-        const data = await response.json();
-        displayListings(data);
-    } catch (error) {
-        console.error("Error:", error);
+document.addEventListener("DOMContentLoaded", async function () {
+    const listingsContainer = document.getElementById("listings");
+
+    async function getEbayListings() {
+        try {
+            const response = await fetch("http://localhost:3000/ebay-listings");
+            if (!response.ok) throw new Error("Failed to fetch listings");
+
+            const data = await response.json();
+            if (data.length === 0) {
+                listingsContainer.innerHTML = "<p>No listings found.</p>";
+                return;
+            }
+
+            listingsContainer.innerHTML = "";
+            data.forEach(item => {
+                const listingElement = document.createElement("div");
+                listingElement.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>Price: ${item.price.value} ${item.price.currency}</p>
+                    <img src="${item.image ? item.image.imageUrl : ''}" alt="${item.title}" width="150">
+                    <p><a href="${item.itemWebUrl}" target="_blank">View on eBay</a></p>
+                `;
+                listingsContainer.appendChild(listingElement);
+            });
+        } catch (error) {
+            console.error("Error fetching eBay listings:", error);
+            listingsContainer.innerHTML = "<p>Error loading listings.</p>";
+        }
     }
-}
 
-function displayListings(data) {
-    const listingsContainer = document.getElementById("listing");
-    listingsContainer.innerHTML = ""; // Clear previous listings
-
-    if (!data.itemSummaries) {
-        listingsContainer.innerHTML = "<p>No listings found.</p>";
-        return;
-    }
-
-    data.itemSummaries.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("listing");
-
-        const itemImage = document.createElement("img");
-        itemImage.src = item.image.imageUrl;
-        itemElement.appendChild(itemImage);
-
-        const itemTitle = document.createElement("h3");
-        itemTitle.textContent = item.title;
-        itemElement.appendChild(itemTitle);
-
-        const itemPrice = document.createElement("p");
-        itemPrice.textContent = `Price: $${item.price.value}`;
-        itemElement.appendChild(itemPrice);
-
-        const itemLink = document.createElement("a");
-        itemLink.href = item.itemWebUrl;
-        itemLink.textContent = "View Item";
-        itemLink.target = "_blank";
-        itemElement.appendChild(itemLink);
-
-        listingsContainer.appendChild(itemElement);
-    });
-}
+    getEbayListings();
+});

@@ -1,54 +1,41 @@
-const express = require('express');
-const app = express();
-const axios = require('axios');
-const cors = require('cors');
+const express = require("express");
+const fetch = require("node-fetch");
+const cors = require("cors");
+require("dotenv").config();
 
-const EBAY_API_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=ritikite";
-const OAUTH_TOKEN = 'v^1.1#i^1#f^0#r^0#I^3#p^1#t^H4sIAAAAAAAA/+VYbWwURRi+u36lQDGk+EH58FzkhzS7N7u3t3e37Z259qg9c7SVa0s/Qure7GzZ9m733JmzvdiGo4kQf0BIEyXBBCs/lKiN8INg+OEPDEoiAoYYoyCSGD9IiMYAIX4E3b07yrUSQHqJTbw/l3nnnXee55n3nZkdkK2sXr+jdceNGnuVYyoLsg67nV0Mqisr6peWOeoqbKDIwT6VfTJbPlH2UyOWkomUuAnhlK5h5BxNJjQs5owBKm1ooi5hFYualERYJFCMhTZGRY4BYsrQiQ71BOWMhAOU2+uDECA/B5AMoQBMq3YrZqceoBSZ9wlexLMQScDt581+jNMoomEiaSRAcYDz0MBNc3wny4usILJ+hue5PsrZjQys6prpwgAqmIMr5sYaRVjvDlXCGBnEDEIFI6GWWHsoEt7Q1tnoKooVLOgQIxJJ49mtZl1Gzm4pkUZ3nwbnvMVYGkKEMeUK5meYHVQM3QLzAPBzUnv9cTf0CjIv+3mP4OFKImWLbiQlcncclkWVaSXnKiKNqCRzL0VNNeJDCJJCq80MEQk7rb/n0lJCVVRkBKgNTaHeUEcHFWxC2pCUVDU6qmKiaoOY7tgUpqEPcn5ZgYDmIOeTkQ8WJspHK8g8Z6ZmXZNVSzTsbNNJEzJRo7nagCJtTKd2rd0IKcRCVOwn3NLQLfRZi5pfxTTZqlnripKmEM5c894rMDOaEEONpwmaiTC3IydRgJJSKVWm5nbmcrGQPqM4QG0lJCW6XCMjI8yIm9GNQRcHAOvq2RiNwa0oKVGmr1XreX/13gNoNUcFInMkVkWSSZlYRs1cNQFog1TQw7EcxxZ0nw0rONf6D0MRZ9fsiihVhShxH+I45OPiguyLA6kUFRIsJKnLwoHiUoZOSsYwIqmEBBENzTxLJ5GhyqLbo3Bun4JoWfArNO9XFDrukQWaVRACCMXj0O/7PxXK/aZ6DEEDkZLkesnyvDPjag1HPZk+7dnWuFvf3KuQLs1o6Qkbo+mhYT/X5GvyC+4MBL1dgfuthjuSb06opjKd5vylEMCq9dKJ0KpjguR50YtBPYU69IQKMwtrgd2G3CEZJBNDiYRpmBfJUCoVKc1eXTJ6/3KbeDDepTuj/qPz6Y6ssJWyC4uVNR6bAaSUylgnEAP1pMuqdV0yrx+WeSCHel68VfPmuqBYmyTzbFU5f+VkcnQZ/CJkDIT1tGHetpl26wbWqQ8jzTzPiKEnEsjonl8GWPWcTKaJFE+ghVbYJUhwVVpghy3r5Tkf5/F6/fPiBXNH6cBC25JKsRWXP/OA12rX7I/8oC33Yyfsx8GE/UOH3Q4awTp2LXiisqyrvGxJHVYJYlRJYbA6qJnfrgZihlEmJamGo9Z2ZmlU3t4avZ6Np49uvva0z1ZT9MYwtQU8NvPKUF3GLi56cgCrbvdUsA89WsN5gJvjWZ4VWH8fWHu7t5x9pHz5N80N56/2X8crttR5Tlw4dmNfLaoHNTNOdnuFrXzCbnt4T8+hsfXn/nzr5YfOhgdW7z9Zv+SPTP+2MWH1OrFrRdYtTf9cdbJh8vFtl6Z317y2rPHg5OJfKpeGt68ePffBxePffbWxZ3r5xaptjsM9V9iKLw/S8Ivzb7jGBi5Xd9cd6x8CL40d+XXys5WLPq4+MPrj8j2T8qmW02fAtR/G0XjPXv6FNZt3KskN7PPL/qp9++xeR1Ww9uArF16N48s7Q+eZZVf0XfunJi/9Vm+7mZEXvXl6ZSQdyDi8TMO7q24eo09d2N19/JN1Z4Vz+77eETsg7K/6/J3x5NVvvz8xvbP3o6Hgkj1PaZ++rxw5cDhxuk3iO6bl8YaoXt9/ygmPDh/atei9108OrPk9v5Z/A3NQGvb9EQAA'; // Replace with your OAuth token
+const app = express();
+const PORT = 3000;
 
 app.use(cors());
 
-app.get('/ebay-listings', async (req, res) => {
-    try {
-        const response = await axios.get(EBAY_API_URL, {
-            headers: { Authorization: `Bearer ${OAUTH_TOKEN}` }
-        });
+const EBAY_SELLER_USERNAME = "ritekite"; // Replace with your actual eBay username
+const EBAY_AUTH_TOKEN = "v^1.1#i^1#r^0#f^0#I^3#p^1#t^H4sIAAAAAAAA/+VYf2wTVRxv9zNzDgmoCKLOA0OE3fV+9NrrQYvdutGSsY21+8GIwPXu3Xbb9e649+pWjXEbiEqMUSJBUSNZlBAiiRqDxigxRFBIBAwGSSAhagSHJKJARIM/7toyukkAWROX2H+a933f933fz+d9vu+9e2R/SdncdeF1v1Y4Swu29JP9BU4nVU6WlRTPm1RYMKPYQeY4OLf0z+4vGiz8YQEUEqrBNwNo6BoElX0JVYN82ujHkqbG6wJUIK8JCQB5JPLR4JJ6niZI3jB1pIu6ilVGQn5MpBjAknHSzXJMXCZ9llW7HDOm+zHGzTGkyFAcR4q0j5WsfgiTIKJBJGjIj9EkzeIkg9PuGOXmGZqnWYImmQ6sshWYUNE1y4UgsUA6XT491szJ9dqpChACE1lBsEAkWBdtDEZCtQ2xBa6cWIEsD1EkoCQc3arRJVDZKqhJcO1pYNqbjyZFEUCIuQKZGUYH5YOXk7mJ9NNUyyzLyWLcIzJuipI5kBcq63QzIaBr52FbFAmX06480JCCUtdj1GIj3g1ElG01WCEioUr7b2lSUBVZAaYfq60OLgs2NWGBaqB1CwlFw+sViBStE+JNzSFc5CzJSLJI4rRIcxLgxOxEmWhZmsfMVKNrkmKTBisbdFQNrKzBWG7oHG4sp0at0QzKyM4o18+T5ZDyeTvsRc2sYhJ1afa6goRFRGW6ef0VGBmNkKnEkwiMRBjbkabIjwmGoUjY2M60FrPy6YN+rAshg3e5ent7iV6G0M1OF02SlKt9SX1U7AIJAbN87VrP+CvXH4AraSiipS3Ln0cpw8qlz9KqlYDWiQVYmqJpKsv76LQCY63/MORgdo2uiHxVCMf63IBxe70UE7f2HU8+KiSQFanLzgPEhRSeEMwegAxVEAEuWjpLJoCpSDzDyjTDyQCXPD4Zd/tkGY+zkgenZABIAOJx0cf9nwrlRqUeBaIJUF60njedx1KucKieTXVoi8NxRm9bJqMWzaxrD5l9ye4eH13NVfs8TEokl7X4b7Qargq+RlUsZmLW/PkgwK71/JEQ1iEC0rjgRUXdAE26qoipibXAjCk1CSZKRYGqWoZxgQwaRiQ/e3Xe4P3LbeLmcOfvjPqPzqerooK2ZCcWKns8tAIIhkLYJxAh6gmXXeu6YF0/bPPKdNbjwq1YN9cJhdoCmUGrSJkrJ5GGS8BHRMIEUE+a1m2baLRvYDG9B2jWeYZMXVWB2To+Bdj1nEgkkRBXwUQr7DwIXBEm2GFLed00R3u8bnZcuMT0Ubpyom1J+diKixbd5LXaNfojP+BI/6hB525y0LmrwOkkF5APULPI+0sKW4oKb50BFQQIRZAJqHRq1rerCYgekDIExSyY6jg4qV4aCNdf6I8n3287v5BzVOS8MWx5mLxr5JWhrJAqz3lyIGde6SmmbptWQbMkQ7spN0PTbAc560pvEXVn0e1zDgwH9ze3RGZScslHFz4tG17df4asGHFyOosdRYNOx9CXU46fO3RumH5q+8bHDn9/FPzx7Fdtm3ZVnXj6RTz1yQuv19LPDXweMS+6Vq89v23gp1MHmrv+/OutzcR3K6Y1hE/Vdu4snf3qsT3vfjN/qnR2/R3bSvVu9Z6yvatXcTO2lj3zdfDbXSdaLyVK1xhrNhce8i5sa/9xz8xTx/bHjvh3vLFx+S1r7704r3TfGmXpy9OnDKiXHg0d3HT67IbTzw+uD752+Pyhgg1V2JOfrZzlPz48/e7lvpPb9/3+S19obvOkVR8zrUeH1KNTvvj5lUtvfyiG9lbvlm57p3lFVflL99WUtw89QU+GJ6vCbXW/vecYety11TF/8kNvHvEmex/0zwknznyww9i5OFxx+uCizFr+DedcAmD9EQAA"; // Replace with your actual OAuth token
 
-        res.json(response.data);
+app.get("/ebay-listings", async (req, res) => {
+    try {
+        const response = await fetch(
+            `https://api.ebay.com/buy/browse/v1/item_summary/search?seller=${EBAY_SELLER_USERNAME}`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${EBAY_AUTH_TOKEN}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`eBay API Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        res.json(data.itemSummaries || []);
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        console.error("Error fetching eBay listings:", error);
+        res.status(500).json({ error: "Failed to fetch eBay listings" });
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
-
-app.get('/ebay-listings', async (req, res) => {
-    try {
-        console.log("Fetching eBay listings...");
-        
-        const response = await axios.get(EBAY_API_URL, {
-            headers: { Authorization: `Bearer ${OAUTH_TOKEN}` }
-        });
-
-        console.log("eBay API Response:", response.data); // Log API response
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error fetching eBay listings:", {
-            message: error.message,
-            status: error.response?.status,
-            data: error.response?.data
-        });
-
-        res.status(500).json({ 
-            message: "Internal Server Error", 
-            error: error.response?.data || error.message 
-        });
-    }
-});
-
-
-
-
