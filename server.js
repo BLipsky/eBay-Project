@@ -4,7 +4,7 @@ const axios = require('axios');
 const cors = require('cors');
 
 const EBAY_API_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=ritikite";
-const OAUTH_TOKEN = 'v^1.1#i^1#p^1#I^3#r^0#f^0#t^H4sIAAAAAAAA/+VYf2wTVRxvt25kgU0iBghCrAf8oeau96PX9i5rXUfBVcs2144fi4Rc795tb2vvznuvbAUNZSJkKoE/MGYhJIskLhDRGIkofwwloBEkSjT6ByECEVHij6AiETF415bRTQLImrjE/tO87/u+7/t8Pu/7fe/do3PVNQ9vatp0udY5pWIoR+cqnE5mKl1TXfVIXWXFnCoHXeLgHMotyLn6K7+rR1I6ZYhtABm6hoC7L53SkJg3BomMqYm6hCASNSkNkIhlMR5eGhNZihYNU8e6rKcIdzQSJHjgAxwIyLQaSAqc4Les2vWYCT1ISCqb9CdV1hcIqF7FL1v9CGVAVENY0nCQYGmWJ2mOZIQEw4u8X+RYivMKHYR7GTAR1DXLhaKJUB6umB9rlmC9NVQJIWBiKwgRioaXxFvC0cji5kS9pyRWqKhDHEs4g8a2FukKcC+TUhlw62lQ3luMZ2QZIER4QoUZxgYVw9fB3AX8gtQMx0uMovq9fj/n95VHyiW6mZbwrXHYFqiQat5VBBqGOHs7RS01kt1AxsVWsxUiGnHbf09mpBRUITCDxOLG8MpwaysRagRat5SGGhmDCEOtE5GtbRFSDsisoKgyTbIyG1CsLCtOVIhWlHncTIt0TYG2aMjdrONGYKEG47XxlmhjObVoLWZYxTaiUj//dQ1ZvsNe1MIqZnCXZq8rSFtCuPPN26/A6GiMTZjMYDAaYXxHXiKrbAwDKsT4znwuFtOnDwWJLowN0ePp7e2lejlKNzs9LE0znhVLY3G5C6QlwvK1a73gD28/gIR5KjKwRiIo4qxhYemzctUCoHUSIZ5lWJYp6j4WVmi89R+GEs6esRVRrgqRAgrj83KMQicDPpVTy1EhoWKSemwcICllybRk9gBspCQZkLKVZ5k0MKEicrzKcgEVkIpPUEmvoKpkkld8JKMCQAOQTMpC4P9UKHea6nEgmwCXJdfLlueJrKcpEuOzHdrjTUlOX75Sxe2auWRFxOzLdPcIbGOgUfBxWZle2R6802q4KflFKWgpk7DmL4cAdq2XT4QmHWGgTIheXNYN0KqnoJydXAvMmUqrZOJsHKRSlmFCJMOGES3PXl02ev9ym7g73uU7o/6j8+mmrJCdspOLlT0eWQEkA1L2CUTJetpj17ouWdcP27w6j3pCvKF1c51UrC2SBbZQKVw5qTxdCq2RKRMgPWNat22qxb6BJfQeoFnnGTb1VAqYyyaWAXY9p9MZLCVTYLIVdhkSHEqT7LBl/F6WE4QAz06Il5w/SldPti2pHFux67G7vFZ7xn7khxz5H9PvPET3O0cqnE66nl7IzKcfrK5sd1VOm4MgBhSUVArBTs36djUB1QOyhgTNihmOT+tiyoam2KVcMrN/+W+PBhy1JW8MQ6vo2aOvDDWVzNSSJwd67o2eKuaeWbUsT3OMwPC8n2M76Pk3el3MTNd9r11qEbfu2n7ul4HjxvF5l49u2f/HQbp21MnprHK4+p2OjRf3nJm+04/Pfk8fnCU1Rs88O2/3sb1f//XBxw3Vu3fMTH578uTwlOe2wJpd147+MPBlgr3weTUc3Dn4Sfeh8Nqdp4259dPq2hIf5hKfXbrafGBk79SfT697YM6Zs3vWP71v9rqLWxIVy4cO/9jjW/jOr1l6I7+vbcqh+RtfGt7G4RNvfHHlzWNvDcacvamBgeHj559iGuTnVy3OXBk5deKrIyPnNydOzVaGzp3Y3jl9uP2ZK3WvfrTg9XXXGhbcf+RYML0iEqSCjYMXnnAd6Dr5J3HxG/fb5A7pcPfW6a3R3vfWgt9ntK1/n2zaGnto7osOuObdrDAwQ/vJfKV++8tD976wufqqFBU2NSzdUFjLvwEuaUtv/REAAA=='; // Replace with your OAuth token
+const OAUTH_TOKEN = 'v^1.1#i^1#f^0#r^0#I^3#p^1#t^H4sIAAAAAAAA/+VYbWwURRi+u36lQDGk+EH58FzkhzS7N7u3t3e37Z259qg9c7SVa0s/Qure7GzZ9m733JmzvdiGo4kQf0BIEyXBBCs/lKiN8INg+OEPDEoiAoYYoyCSGD9IiMYAIX4E3b07yrUSQHqJTbw/l3nnnXee55n3nZkdkK2sXr+jdceNGnuVYyoLsg67nV0Mqisr6peWOeoqbKDIwT6VfTJbPlH2UyOWkomUuAnhlK5h5BxNJjQs5owBKm1ooi5hFYualERYJFCMhTZGRY4BYsrQiQ71BOWMhAOU2+uDECA/B5AMoQBMq3YrZqceoBSZ9wlexLMQScDt581+jNMoomEiaSRAcYDz0MBNc3wny4usILJ+hue5PsrZjQys6prpwgAqmIMr5sYaRVjvDlXCGBnEDEIFI6GWWHsoEt7Q1tnoKooVLOgQIxJJ49mtZl1Gzm4pkUZ3nwbnvMVYGkKEMeUK5meYHVQM3QLzAPBzUnv9cTf0CjIv+3mP4OFKImWLbiQlcncclkWVaSXnKiKNqCRzL0VNNeJDCJJCq80MEQk7rb/n0lJCVVRkBKgNTaHeUEcHFWxC2pCUVDU6qmKiaoOY7tgUpqEPcn5ZgYDmIOeTkQ8WJspHK8g8Z6ZmXZNVSzTsbNNJEzJRo7nagCJtTKd2rd0IKcRCVOwn3NLQLfRZi5pfxTTZqlnripKmEM5c894rMDOaEEONpwmaiTC3IydRgJJSKVWm5nbmcrGQPqM4QG0lJCW6XCMjI8yIm9GNQRcHAOvq2RiNwa0oKVGmr1XreX/13gNoNUcFInMkVkWSSZlYRs1cNQFog1TQw7EcxxZ0nw0rONf6D0MRZ9fsiihVhShxH+I45OPiguyLA6kUFRIsJKnLwoHiUoZOSsYwIqmEBBENzTxLJ5GhyqLbo3Bun4JoWfArNO9XFDrukQWaVRACCMXj0O/7PxXK/aZ6DEEDkZLkesnyvDPjag1HPZk+7dnWuFvf3KuQLs1o6Qkbo+mhYT/X5GvyC+4MBL1dgfuthjuSb06opjKd5vylEMCq9dKJ0KpjguR50YtBPYU69IQKMwtrgd2G3CEZJBNDiYRpmBfJUCoVKc1eXTJ6/3KbeDDepTuj/qPz6Y6ssJWyC4uVNR6bAaSUylgnEAP1pMuqdV0yrx+WeSCHel68VfPmuqBYmyTzbFU5f+VkcnQZ/CJkDIT1tGHetpl26wbWqQ8jzTzPiKEnEsjonl8GWPWcTKaJFE+ghVbYJUhwVVpghy3r5Tkf5/F6/fPiBXNH6cBC25JKsRWXP/OA12rX7I/8oC33Yyfsx8GE/UOH3Q4awTp2LXiisqyrvGxJHVYJYlRJYbA6qJnfrgZihlEmJamGo9Z2ZmlU3t4avZ6Np49uvva0z1ZT9MYwtQU8NvPKUF3GLi56cgCrbvdUsA89WsN5gJvjWZ4VWH8fWHu7t5x9pHz5N80N56/2X8crttR5Tlw4dmNfLaoHNTNOdnuFrXzCbnt4T8+hsfXn/nzr5YfOhgdW7z9Zv+SPTP+2MWH1OrFrRdYtTf9cdbJh8vFtl6Z317y2rPHg5OJfKpeGt68ePffBxePffbWxZ3r5xaptjsM9V9iKLw/S8Ivzb7jGBi5Xd9cd6x8CL40d+XXys5WLPq4+MPrj8j2T8qmW02fAtR/G0XjPXv6FNZt3KskN7PPL/qp9++xeR1Ww9uArF16N48s7Q+eZZVf0XfunJi/9Vm+7mZEXvXl6ZSQdyDi8TMO7q24eo09d2N19/JN1Z4Vz+77eETsg7K/6/J3x5NVvvz8xvbP3o6Hgkj1PaZ++rxw5cDhxuk3iO6bl8YaoXt9/ygmPDh/atei9108OrPk9v5Z/A3NQGvb9EQAA'; // Replace with your OAuth token
 
 app.use(cors());
 
@@ -24,3 +24,31 @@ app.get('/ebay-listings', async (req, res) => {
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
 });
+
+app.get('/ebay-listings', async (req, res) => {
+    try {
+        console.log("Fetching eBay listings...");
+        
+        const response = await axios.get(EBAY_API_URL, {
+            headers: { Authorization: `Bearer ${OAUTH_TOKEN}` }
+        });
+
+        console.log("eBay API Response:", response.data); // Log API response
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching eBay listings:", {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data
+        });
+
+        res.status(500).json({ 
+            message: "Internal Server Error", 
+            error: error.response?.data || error.message 
+        });
+    }
+});
+
+
+
+
