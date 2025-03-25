@@ -2,10 +2,11 @@ document.addEventListener("DOMContentLoaded", getEbayListings);
 
 async function getEbayListings() {
     try {
-        const response = await fetch("http://localhost:3000/ebay-listings");
+        const response = await fetch("https://your-app.onrender.com/ebay-listings");
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
+        
         displayListings(data);
     } catch (error) {
         console.error("Error fetching eBay listings:", error);
