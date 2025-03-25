@@ -28,3 +28,4 @@ function displayListings(items) {
         `).join('') 
         : "<p>No listings found.</p>";
 }
+app.use(express.static('public'));

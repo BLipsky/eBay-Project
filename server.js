@@ -39,3 +39,6 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 app.get("/", (_, res) => {
     res.send("Welcome to the eBay Listings API");
 });
+app.get('/favicon.ico', (_, res) => {
+    res.status(204).end(); // No content
+});
