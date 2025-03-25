@@ -9,7 +9,8 @@ async function getEbayListings() {
         displayListings(data);
     } catch (error) {
         console.error("Error fetching eBay listings:", error);
-        document.getElementById("listingsContainer").innerHTML = "<p>Error loading listings. Try again later.</p>";
+        document.getElementById("listingsContainer").innerHTML = 
+            "<p>Error loading listings. Try again later.</p>";
     }
 }
 
