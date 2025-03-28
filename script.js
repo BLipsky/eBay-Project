@@ -27,3 +27,47 @@ function displayListings(items) {
         `).join('') 
         : "<p>No listings found.</p>";
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const ebayAPIUrl = `https://svcs.ebay.com/services/search/FindingService/v1?` +
+      `OPERATION-NAME=findItemsAdvanced&` +
+      `SERVICE-VERSION=1.0.0&` +
+      `SECURITY-Benjamin-Listings-PRD-c8c29dfc0-2c28de8c&` + // Replace with your actual eBay App ID
+      `RESPONSE-DATA-FORMAT=JSON&` +
+      `REST-PAYLOAD&` +
+      `sellername=Ritekite`; // Filter by your store
+  
+    function getEbayListings() {
+      fetch(ebayAPIUrl)
+        .then(response => response.json())
+        .then(data => {
+          const items = data.findItemsAdvancedResponse[0].searchResult[0].item;
+          const listingsContainer = document.getElementById("ebay-listings");
+  
+          items.forEach(item => {
+            const listing = document.createElement("div");
+            listing.classList.add("listing");
+  
+            const title = document.createElement("h3");
+            title.textContent = item.title[0];
+            listing.appendChild(title);
+  
+            const price = document.createElement("p");
+            price.textContent = `Price: $${item.sellingStatus[0].currentPrice[0].__value__}`;
+            listing.appendChild(price);
+  
+            const image = document.createElement("img");
+            image.src = item.galleryURL[0];
+            image.alt = item.title[0];
+            listing.appendChild(image);
+  
+            listingsContainer.appendChild(listing);
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching eBay listings:", error);
+        });
+    }
+  
+    getEbayListings();
+  });
+  
