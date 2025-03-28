@@ -4,55 +4,65 @@ const fetch = require("node-fetch");
 
 const app = express();
 app.use(cors({ origin: "http://127.0.0.1:5500" })); // Allow requests from Live Server
-app.use(express.static('public'));  // Serve static files
+app.use(express.static("public")); // Serve static files
 
-const EBAY_AUTH_TOKEN = "v^1.1#i^1#r^0#f^0#p^1#I^3#t^H4sIAAAAAAAA/+VYe2xTVRhf23VkgWIEZTIxlMszkN5XX/de1pKOgh0UVuheLCq7j3O3u93e29xzalf/wG5xoAkRjJGgSECDAlHRMAiGBA1qYmJ8EBEl8RHRP0ANmhDJEiXGe7tudJMAsiYusf805zvf+c7v9zvfd865h8xXVS/dGts65LJNse/Pk3m7zUZNJaurnMumO+y1zgqyxMG2P78gX9nvuFQH+ZSa5jYCmNY1CNy9KVWDXMEYwjKGxuk8VCCn8SkAOSRyyci6OEfjJJc2dKSLuoq5G6IhTKBkliUZmfEBKSj4AqZVG4nZpIcwQAcEf4DiGUkWvIJPMvshzIAGDSJeQyGMJmm/h/R6aKaJCnIky3kpPBj0t2PuFmBARddMF5zEwgW4XGGsUYL15lB5CIGBzCBYuCGyOtkYaYiuWt9UR5TEChd1SCIeZeDY1kpdAu4WXs2Am08DC95cMiOKAEKMCA/PMDYoFxkBcwfwC1IHWB9FkYzkY/2MQPN8WaRcrRspHt0ch2VRJI9ccOWAhhSUu5WiphpCNxBRsbXeDNEQdVt/GzK8qsgKMELYqvrIpkgigYXrgdbNpxTNE1cgUrRO6ElsjHpERqRZSRZJDy3SjAQYsTjRcLSizONmWqlrkmKJBt3rdVQPTNRgrDYBzl+ijenUqDUaERlZiEr92BENA6YfMbKKGdSlWesKUqYQ7kLz1iswOhohQxEyCIxGGN9RkCiE8em0ImHjOwu5WEyfXhjCuhBKcwSRzWbxrBfXjU6CJkmKaFsXT4pdIGVmSG/KqvVhf+XWAzxKgYoIzJFQ4VAubWLpNXPVBKB1YmE/TdE0VdR9LKzweOs/DCWcibEVUa4KAZREBVhGFEiK5QUyUI4KCReTlLBwAIHPeVK80QNQWuVF4BHNPMukgKFInNcv015GBh4pwMoeHyvLHsEvBTyUDAAJgCCILPN/KpTbTfUkEA2AypLrZcvzphwRi8b9uXZtTUzw6q2bZNSsGavbokZvpruHpeuZejbgzYnkpubQ7VbDDcmvVBVTmSZz/nIIYNV6+USI6RABaUL0kqKeBgldVcTc5FpgryEleAPlkkBVTcOESEbS6Yby7NVlo/cvt4k7412+M+o/Op9uyApaKTu5WFnjoRmATyu4dQLhop4irFrXefP6YZk3F1BPiLdi3lwnFWuT5DBbRRq+cuIFujh8VMQNAPWMYd628UbrBtak9wDNPM+QoasqMFomlgFWPadSGcQLKphshV2GBFf4SXbYUkGfl2KoYHBivMTCUbp5sm1J5diKKx+8w2s1MfYjP1xR+FH9tvfIfts7dpuNrCMXUvPJeVWO5krHtFqoIIArvIxDpVMzv10NgPeAXJpXDPvMis+mx6W+WPxqXsicaP19BVPhKnlj2P8wed/oK0O1g5pa8uRAzrne46TuqnHRftJLmytOsl6qnZx/vbeSmlV5z5yLh3+6tNedse0dOoW7r+x8aMq+5aRr1Mlmc1ZU9tsqgKNj5ofVB797decj9lbfzu3Z87NWXNm7aMGBRfH365hftszelsi+9OY2u1M5/cHRT7/Gvlhc+2vj6Xs/+a2q77lY85Flx2qc2xIDK9bYvvl54R9qmzO5+6lru46HQpfn/XClzuU+JUb33f/40Y/mhwbauwcGHXcffvH0FmZPDTOjZ/nnzr6atSeeYGb0TT8kXnw2e+Zylp96/lrdM+d27Rlsfcx15gjxsTK7rcPxxoX+uceSJ7/cPO3CoHr4xwf+/OoA0RGbebaldencKW1Dnd8fevk45/1ryZLeq9jgyRfOMsZA/7mNz4d2dLy+oct18MnXthNDvm9rE4tOLX07O+fs7Au2WfPefeWtp3fnF68dXsu/Aew4xJ39EQAA";
-
+const EBAY_OAUTH_TOKEN =
+"v^1.1#i^1#p^3#I^3#f^0#r^0#t^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"
 // Fetch all inventory items
 const fetchAllInventoryItems = async () => {
-    const sellerId = "salesbyzuki";  // eBay seller ID
-    const limit = 200;  // Max items per page
-    let allItems = [];
-    let page = 1;
-    let hasMoreItems = true;
+  const sellerId = "salesbyzuki"; // eBay seller ID
+  const limit = 200; // Max items per page
+  let allItems = [];
+  let page = 1;
+  let hasMoreItems = true;
 
-    while (hasMoreItems) {
-        const url = `https://api.ebay.com/sell/inventory/v1/inventory_item?limit=${limit}&page=${page}&seller=${sellerId}`;
-        console.log(`Fetching page ${page}...`);
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${EBAY_AUTH_TOKEN}`,
-                "Content-Type": "application/json"
-            }
-        });
+  while (hasMoreItems) {
+    const url = `https://api.ebay.com/sell/inventory/v1/inventory_item?limit=${limit}&page=${page}&seller=${sellerId}`;
+    console.log(`Fetching page ${page}...`);
 
-        if (!response.ok) {
-            throw new Error(`Error fetching inventory items: ${response.statusText}`);
-        }
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${EBAY_OAUTH_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-        const data = await response.json();
-        console.log(`Fetched ${data.inventoryItems?.length || 0} items on page ${page}`);
+      if (!response.ok) {
+        throw new Error(
+          `Error fetching inventory items: ${response.statusText}`
+        );
+      }
 
-        allItems = [...allItems, ...(data.inventoryItems || [])];
+      const data = await response.json();
+      console.log(
+        `Fetched ${data.inventoryItems?.length || 0} items on page ${page}`
+      );
 
-        // Check if there are more items to fetch
-        hasMoreItems = data.inventoryItems && data.inventoryItems.length === limit;
-        page++;
+      allItems = [...allItems, ...(data.inventoryItems || [])];
+
+      // Check if there are more items to fetch
+      hasMoreItems =
+        data.inventoryItems && data.inventoryItems.length === limit;
+      page++;
+    } catch (error) {
+      console.error("Error fetching inventory items on page", page, error);
+      throw error;
     }
+  }
 
-    return allItems;
+  return allItems;
 };
 
-
 app.get("/ebay-listings", async (_, res) => {
-    try {
-        const items = await fetchAllInventoryItems();
-        console.log("Total Items Fetched:", items.length);  // Log the total number of items fetched
-        res.json(items);  // Send all items as the response
-    } catch (error) {
-        console.error("Error fetching eBay listings:", error); // Log full error details
-        res.status(500).json({ error: error.message });  // Return the actual error message to the client
-    }
+  try {
+    const items = await fetchAllInventoryItems();
+    console.log("Total Items Fetched:", items.length); // Log the total number of items fetched
+    res.json(items); // Send all items as the response
+  } catch (error) {
+    console.error("Error fetching eBay listings:", error); // Log full error details
+    res.status(500).json({ error: error.message }); // Return the actual error message to the client
+  }
 });
 app.listen(4000, () => console.log("Server running on port 4000"));
