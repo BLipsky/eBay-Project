@@ -11,11 +11,11 @@ const EBAY_AUTH_TOKEN = "v^1.1#i^1#f^0#I^3#p^1#r^0#t^H4sIAAAAAAAA/+VYb2wURRTv9dp
 app.get("/ebay-listings", async (_, res) => {
     try {
         const response = await fetch(
-            `https://api.ebay.com/buy/browse/v1/item_summary/search?seller_ids=ritekite`, // Correct seller filtering
+            `https://api.ebay.com/buy/browse/v1/item_summary/search?seller_ids=salesbyzuki`, // Correct seller filtering
             {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${EBAY_AUTH_TOKEN}`,
+                    "Authorization": `Bearer ${EBAY_AUTH_TOKEN}`, // Authorization token for API
                     "Content-Type": "application/json"
                 }
             }
@@ -26,6 +26,7 @@ app.get("/ebay-listings", async (_, res) => {
         }
 
         const data = await response.json();
+        console.log(data);  // Debugging - Log API response
         res.json(data.itemSummaries || []);  // Ensure only relevant data is sent
     } catch (error) {
         console.error("Error fetching eBay listings:", error);
