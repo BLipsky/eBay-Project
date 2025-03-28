@@ -6,7 +6,7 @@ const app = express();
 app.use(cors({ origin: "http://127.0.0.1:5500" })); // Allow requests from Live Server
 app.use(express.static('public'));  // Serve static files
 
-const EBAY_AUTH_TOKEN = "v^1.1#i^1#f^0#I^3#p^1#r^0#t^H4sIAAAAAAAA/+VYb2wURRTv9dpKrcUoFir4oWzBVGT3Znfvz96md+Tao7RS6NnrQako2ZudbZfe7V525mivxKRUU6OBYIQQNWgwkoiSaCIxxWqB8MVoNCCECCGIaIj4BUNBagwEd++Ocq0EkF5iE+/LZd68efP7/ea9mdkB/SWliwYbB8fKbQ8U7uoH/YU2G1sGSkuKn55pL5xbXAByHGy7+hf0Fw3YL9RiKR5LiK0IJ3QNo6reeEzDYtroo5KGJuoSVrGoSXGERQLFcGBFs8gxQEwYOtGhHqOqmoI+CkGWRZyX9SKPh/N4FdOq3YzZppv9spsVZE5yQ8R7JCc0+zFOoiYNE0kjPooDnIsGPM0JbaxTdHGii2d4ADqoqlXIwKqumS4MoPxpuGJ6rJGD9c5QJYyRQcwglL8p0BBuCTQFl65sq3XkxPJndQgTiSTxxFa9LqOqVVIsie48DU57i+EkhAhjyuHPzDAxqBi4CeY+4Kel5hEbdULAQcWruLwI5EXKBt2IS+TOOCyLKtNK2lVEGlFJ6m6KmmpE1yNIsq2VZoimYJX192xSiqmKigwftbQusCYQClH+OqStl+KqRjermKhaJ6ZDrUEaCpDzygoENAc5QUYCzE6UiZaVedJM9bomq5ZouGqlTuqQiRpN1saZo43p1KK1GAGFWIhy/dxZDTkv32EtamYVk6RLs9YVxU0hqtLNu6/A+GhCDDWaJGg8wuSOtEQ+SkokVJma3JnOxWz69GIf1UVIQnQ4enp6mB6e0Y1OBwcA62hf0RyGXSguUaavVesZf/XuA2g1TQUicyRWRZJKmFh6zVw1AWidlN/FsRzHZnWfCMs/2foPQw5nx8SKyFeFuIGZMS634HF6nLIn6slHhfizSeqwcKColKLjktGNSCImQURDM8+ScWSossi7FI4XFETLbq9CO72KQkddsptmFYQAQtEo9Ar/p0K511QPI2ggkpdcz1uet6UcjcFmV6pDe6Yxyuur1ygkohkN7UGjN7m+28vVCXVeN5+CYE3Ed6/VcFvy9THVVKbNnD8fAli1nj8RGnVMkDwlemGoJ1BIj6kwNb0WmDfkkGSQVBjFYqZhSiQDiURTfvbqvNH7l9vE/fHO3xn1H51Pt2WFrZSdXqys8dgMICVUxjqBGKjHHVat65J5/bDM69Kop8RbNW+u04q1STLDVpUzV04mTZfBGyBjIKwnDfO2zbRYN7A2vRtp5nlGDD0WQ8aqqWWAVc/xeJJI0RiaboWdhwRXpWl22LIeJ896eJeHnxIvmD5K1023LSkfW3HRsvu8VjsmfuT7C9I/dsB2GAzYDhTabKAWLGSrwfwSe6TI/tBcrBLEqJLCYLVTM79dDcR0o1RCUo3CWQVHZjbLmxqb/+iPJodWX1kiFJTnvDHseh5Ujr8ylNrZspwnB/DErZ5i9uE55ZwL8JzAOl2ci+8A1bd6i9jZRY9tP/FgTfzyYKSm2r9o7ebFH3xS+W4XKB93stmKC4oGbAX1ytibfyW3jc3qFI3KVvfBS6XzjozNernnyGej7nP7vtlY01e6h7/aN/LGQMvskY9P7Y/Q7Tu3DFWM1u6MbDl0bcu+81dObt69+/w7p0rYlprrV04Mf39h4Y0FOz8dfrWze0Q4WfHWt/Ydw18+Ujtv9KtXvuj96OjgdebzvQeGft70NbkIzng7u869ENj7y3t/vtT7mqdv0/H2388sOtswtIRbew0oiyvW/vRUWWT5nOHdPxw7diP2HH91x3clq0+r3Ghp3w6uJLV3a+TH9yOHXxQWl7lD27bbHZcVekbo+Nuth4RHl79+8exvp/bfqDxa8eSvlwo3nN4Y3Hr08WIAoeD7cMaykfnOY8KeuQcza/k3jp4EB/0RAAA=";
+const EBAY_AUTH_TOKEN = "v^1.1#i^1#I^3#f^0#r^0#p^1#t^H4sIAAAAAAAA/+VYbWwURRjufRRT8Sj4UbFK0i71E3Z3du+2t7f2Dq/XYg9KW7h+QEHJfsy2S+92LztztmdUSjGIUTQxalRMQI3+MBCjQWoiCpqIRoklJKIGiQVighA0qYgiRN29O8q1EkB6iU28P5d55513nueZ952ZHdA/peSudQ3rfvM4rnJu7gf9ToeDmQpKphTPmeZylhcXgTwHx+b+qn73gOtoDRIT8aSwBKKkoSNY0ZeI60jIGINEytQFQ0QaEnQxAZGAZSEWXtQosBQQkqaBDdmIExXRuiDBcjL0+/wsz8oBnlM4y6qfi9lqBAnO7/fxilcV/dWST2J8Vj9CKRjVERZ1bI0HLEcCL8nyrUy1wAEBsJSP8XYSFe3QRJqhWy4UIEIZuEJmrJmH9eJQRYSgia0gRCganh9rDkfr6ptaa+i8WKGcDjEs4hQa24oYCqxoF+MpePFpUMZbiKVkGSJE0KHsDGODCuFzYK4AfkZqH1QYnygzPoXjoU/lCyLlfMNMiPjiOGyLppBqxlWAOtZw+lKKWmpIq6CMc60mK0S0rsL+W5wS45qqQTNI1NeGl4VbWohQLdRXiQlNJxs1hDW9C5EtS+pImZfZgKLKgGRlllcgL+cmykbLyTxupoihK5otGqpoMnAttFDD8dr48rSxnJr1ZjOsYhtRvh9/TkPAd9qLml3FFO7W7XWFCUuIikzz0iswOhpjU5NSGI5GGN+RkShIiMmkphDjOzO5mEufPhQkujFOCjTd29tL9Xopw+yiWQAYeumixpjcDRMiYfnatZ711y49gNQyVGRojUSagNNJC0uflasWAL2LCHEsw7JMTvexsELjrf8w5HGmx1ZEoSpEAX6Rl3x8gOFYn58LFKJCQrkkpW0cUBLTZEI0eyBOxkUZkrKVZ6kENDVF8HIq6+VVSCrVAZX0BVSVlDilmmRUCAGEkmRtkP+nQrncVI9B2YS4ILlesDxvTdMNdY1culNf0CB5jY5lKm7TzflL68y+1KqeAFvL1waqvWkZLGsLXm41XJB8JK5ZyrRa8xdCALvWCydCg4EwVCZELyYbSdhixDU5PbkW2GsqLaKJ0zEYj1uGCZEMJ5PRwuzVBaP3L7eJK+NduDPqPzqfLsgK2Sk7uVjZ45EVQExqlH0CUbKRoO1aN0Tr+mGbV2ZQT4i3Zt1cJxVri2SWraZkr5xUhi6FHpApEyIjZVq3barZvoG1Gj1Qt84zbBrxODTbJ5YBdj0nEiksSnE42Qq7AAmuiZPssGX8Pi/Dg2rAToiXnDlKV062LakQW7H73iu8VtNjP/JDRZkfM+D4GAw4PnQ6HKAG3MrMBpVTXG1u1zXlSMOQ0kSVQlqXbn27mpDqgemkqJnO64qGpjUqaxoaf+2XUoMdJ+fxRZ68N4bN94GZo68MJS5mat6TA7jlfE8xU3qjh+WAl+WZag4AthPMPt/rZsrc16cOHt24w/nkjH189+47DkiPVnbMWww8o04OR3GRe8BRtGPD3pPHtXvWzBSHd6x3CUeiN3tqfp4ncQfurjzVs/bRz4n4HPX3b6JrR47Vxzr2jNy0cfnt04MzN137xuCWN7cy/Z5db2851D5If+aesfrs001/TV9+4o+1H2wq+3b960fPPu4Z2X2nfvDTV7a5E0+1cZH60u/2n/5zxc7Y4fecC8ufnUHNPXH4tTnDV7+1cOtXp4ed1I8tZzZ8cbzJLDvy3PpHDh0qe3ibupoZHN4yQC5IHv7phSHaI9Xvj5ScfAjsfueJ2146sGdW2/03tD24t/z53i9fpt/9JLp8HT33hxXHqlylj5nv//JReST94plZrmdOfN9QenzXyNfiqVdrK7c3RtXZ24f6tg3tjFRV7cuu5d+GZz4K/REAAA==";
 
 // Fetch all inventory items
 const fetchAllInventoryItems = async () => {
@@ -18,6 +18,7 @@ const fetchAllInventoryItems = async () => {
 
     while (hasMoreItems) {
         const url = `https://api.ebay.com/sell/inventory/v1/inventory_item?limit=${limit}&page=${page}&seller=${sellerId}`;
+        console.log(`Fetching page ${page}...`);
         const response = await fetch(url, {
             method: "GET",
             headers: {
@@ -26,11 +27,15 @@ const fetchAllInventoryItems = async () => {
             }
         });
 
+        console.log(`Status: ${response.status} - ${response.statusText}`);
+
         if (!response.ok) {
             throw new Error(`Error fetching inventory items: ${response.statusText}`);
         }
 
         const data = await response.json();
+        console.log(`Fetched ${data.inventoryItems.length} items on page ${page}`);
+
         allItems = [...allItems, ...(data.inventoryItems || [])];
         
         // Check if there are more items to fetch
@@ -40,6 +45,7 @@ const fetchAllInventoryItems = async () => {
 
     return allItems;
 };
+
 
 app.get("/ebay-listings", async (_, res) => {
     try {
