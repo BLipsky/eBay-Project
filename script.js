@@ -1,6 +1,6 @@
 async function getEbayListings() {
     try {
-        const response = await fetch("http://localhost:4000/ebay-listings");  // Fetch from your own server
+        const response = await fetch("http://localhost:5000/ebay-listings");  // Fetch from your own server
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
