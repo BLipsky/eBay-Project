@@ -25,7 +25,8 @@ const fetchAllInventoryItems = async () => {
   let hasMoreItems = true;
 
   while (hasMoreItems) {
-    const url = `https://api.ebay.com/oauth/api_scope/sell.inventory.readonly	`;
+    const url = `https://api.ebay.com/oauth/api_scope/sell.inventory.readonly`;
+
     console.log(`Fetching page ${page}...`);
 
     try {
@@ -38,19 +39,18 @@ const fetchAllInventoryItems = async () => {
       });
 
       if (!response.ok) {
+        console.error(`Error fetching data from eBay: ${response.status} ${response.statusText}`);
         throw new Error(`Error fetching inventory items: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log(`Fetched ${data.inventoryItems?.length || 0} items on page ${page}`);
+      console.log("eBay API Response:", data); // Log the full response
 
       allItems = [...allItems, ...(data.inventoryItems || [])];
-
-      // Check if there are more items to fetch
       hasMoreItems = data.inventoryItems && data.inventoryItems.length === limit;
       page++;
     } catch (error) {
-      console.error("Error fetching inventory items on page", page, error);
+      console.error(`Error on page ${page}:`, error);
       throw error;
     }
   }
@@ -59,14 +59,32 @@ const fetchAllInventoryItems = async () => {
 };
 
 app.get("/ebay-listings", async (_, res) => {
+  const mockData = [
+    {
+      title: "Item 1",
+      imageUrl: "https://via.placeholder.com/150",
+      price: { value: "10.00", currency: "USD" },
+      itemWebUrl: "https://www.ebay.com/itm/item1",
+    },
+    {
+      title: "Item 2",
+      imageUrl: "https://via.placeholder.com/150",
+      price: { value: "20.00", currency: "USD" },
+      itemWebUrl: "https://www.ebay.com/itm/item2",
+    },
+  ];
+  res.json(mockData);
+});
+
+app.get("/ebay-listings", async (_, res) => {
+  console.log("Request received for /ebay-listings");
   try {
     const items = await fetchAllInventoryItems();
-    console.log("Total Items Fetched:", items.length); // Log the total number of items fetched
-    res.json(items); // Send all items as the response
+    console.log("Fetched items:", items); // Check if data is returned
+    res.json(items); // Send items as response
   } catch (error) {
-    console.error("Error fetching eBay listings:", error); // Log full error details
-    res.status(500).json({ error: error.message }); // Return the actual error message to the client
+    console.error("Error fetching eBay listings:", error);
+    res.status(500).send("Error fetching eBay listings.");
   }
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));

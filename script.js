@@ -1,29 +1,34 @@
 async function getEbayListings() {
     try {
-        const response = await fetch("https://raw.githubusercontent.com/BLipsky/eBay-Project/main/C:\Users\525BLipsky\OneDrive - FRHSD\Web Design\eBay Project");  // Fetch from your own server
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-        const data = await response.json();
-        displayListings(data);
+      const response = await fetch("https://ebay-backend-w0r2.onrender.com/ebay-listings");
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  
+      const data = await response.json();
+      displayListings(data);
     } catch (error) {
-        console.error("Error fetching eBay listings:", error);
-        document.getElementById("listingsContainer").innerHTML = 
-            "<p>Error loading listings. Try again later.</p>";
+      console.error("Error fetching eBay listings:", error);
+      document.getElementById("listingsContainer").innerHTML = 
+          "<p>Error loading listings. Try again later.</p>";
     }
-}
-
-function displayListings(items) {
-    const listingsContainer = document.getElementById("listingsContainer");
-    listingsContainer.innerHTML = items.length > 0 ? 
-        items.map(item => `
-            <div class="listing">
-                <img src="${item.image?.imageUrl || 'placeholder.jpg'}" alt="${item.title}">
-                <h3>${item.title}</h3>
-                <p>Price: ${item.price?.value} ${item.price?.currency}</p>
-                <a href="${item.itemWebUrl}" target="_blank">View on eBay</a>
-            </div>
-        `).join('') 
-        : "<p>No listings found.</p>";
-}
-
-document.addEventListener("DOMContentLoaded", getEbayListings);
+  }
+  
+  function displayListings(listings) {
+    const container = document.getElementById("listingsContainer");
+    container.innerHTML = ""; // Clear any previous listings
+  
+    listings.forEach(listing => {
+      const listingElement = document.createElement("div");
+      listingElement.classList.add("listing");
+  
+      listingElement.innerHTML = `
+        <h3>${listing.title}</h3>
+        <img src="${listing.imageUrl}" alt="${listing.title}" />
+        <p>${listing.price.value} ${listing.price.currency}</p>
+        <a href="${listing.itemWebUrl}" target="_blank">View Item</a>
+      `;
+      container.appendChild(listingElement);
+    });
+  }
+  
+  document.addEventListener("DOMContentLoaded", getEbayListings);
+  
