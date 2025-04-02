@@ -25,7 +25,7 @@ const fetchAllInventoryItems = async () => {
   let hasMoreItems = true;
 
   while (hasMoreItems) {
-    const url = `https://api.ebay.com/oauth/api_scope/sell.inventory.readonly`;
+    const url = `https://api.ebay.com/sell/inventory/v1/inventory_item`;
 
     console.log(`Fetching page ${page}...`);
 
@@ -58,23 +58,6 @@ const fetchAllInventoryItems = async () => {
   return allItems;
 };
 
-app.get("/ebay-listings", async (_, res) => {
-  const mockData = [
-    {
-      title: "Item 1",
-      imageUrl: "https://via.placeholder.com/150",
-      price: { value: "10.00", currency: "USD" },
-      itemWebUrl: "https://www.ebay.com/itm/item1",
-    },
-    {
-      title: "Item 2",
-      imageUrl: "https://via.placeholder.com/150",
-      price: { value: "20.00", currency: "USD" },
-      itemWebUrl: "https://www.ebay.com/itm/item2",
-    },
-  ];
-  res.json(mockData);
-});
 
 app.get("/ebay-listings", async (_, res) => {
   console.log("Request received for /ebay-listings");
