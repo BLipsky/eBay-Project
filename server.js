@@ -18,6 +18,13 @@ const EBAY_AUTH_TOKEN =
 "vv7Sme+9L73ZefBCOfutx187/OxDp77zp7232tW5/DfX7zxJXB4AAA==";
 
 // Fetch all inventory items
+
+console.log("Using token:", EBAY_AUTH_TOKEN);
+console.log("Authorization Header:", {
+    Authorization: `Bearer ${EBAY_AUTH_TOKEN}`,
+    "Content-Type": "application/json"
+});
+
 const fetchAllInventoryItems = async () => {
   const limit = 200; // Max items per page
   let allItems = [];
