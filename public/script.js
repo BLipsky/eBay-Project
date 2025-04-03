@@ -27,6 +27,13 @@ async function getEbayListings() {
         <a href="${listing.itemWebUrl}" target="_blank">View Item</a>
       `;
       container.appendChild(listingElement);
+      if (data.length === 0) {
+        document.getElementById("listingsContainer").innerHTML = 
+            "<p>No listings found. Please add items to your eBay inventory.</p>";
+      } else {
+        displayListings(data);
+      }
+      
     });
   }
   
