@@ -1,6 +1,6 @@
 async function getEbayListings() {
   try {
-    const response = await fetch("http://localhost:4000/ebay-listings"); // Update the URL if needed
+    const response = await fetch("http://localhost:4000/ebay-listings"); // Update URL if needed
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();
@@ -16,6 +16,12 @@ function displayListings(listings) {
   const container = document.getElementById("listingsContainer");
   container.innerHTML = ""; // Clear any previous listings
 
+  if (!listings || listings.length === 0) {
+    container.innerHTML =
+      "<p>No listings found or an error occurred.</p>";
+    return;
+  }
+
   listings.forEach((listing) => {
     const listingElement = document.createElement("div");
     listingElement.classList.add("listing");
@@ -28,10 +34,6 @@ function displayListings(listings) {
     `;
     container.appendChild(listingElement);
   });
-
-  if (listings.length === 0) {
-    container.innerHTML = "<p>No listings found. Please add items to your eBay inventory.</p>";
-  }
 }
 
 document.addEventListener("DOMContentLoaded", getEbayListings);
